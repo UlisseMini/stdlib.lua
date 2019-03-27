@@ -29,18 +29,28 @@ function typecheck(fn, name, ...)
   end
 end
 
--- lazy returns a function that executes fn with all the arguments passed
--- to lazy plus any others.
-function lazy(fn, ...)
+-- part returns a function that executes fn with all the arguments passed
+-- to part plus any others.
+function part(fn, ...)
+  if type(fn) ~= 'function' then
+   error("bad argument #1 to 'part' (function expected, got "..type(fn)..")")
+  end
+
   local args = table.pack(...)
   return function(...)
-    return fn(table.unpack(args), ...)
+    local args2 = {...}
+    local ret = {pcall(function()
+      return fn(table.unpack(args), table.unpack(args2))
+    end)}
+
+    if ret[1] == false then
+      error(ret[2], 2)
+    else
+      return table.unpack(ret, 2, #ret)
+    end
   end
 end
-lazy = typecheck(lazy, "lazy", "function")
 
--- map over a table and set the every key to the result of fn applied to the
--- value.
 function table:map(fn)
   local result = {}
   for i,v in next, self do
@@ -53,6 +63,6 @@ table.map = typecheck(table.map, "map", "table", "function")
 
 -- Return the exported functions.
 return {
-  lazy = lazy,
+  part = part,
   typecheck = typecheck,
 }
