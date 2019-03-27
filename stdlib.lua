@@ -1,7 +1,7 @@
 -- return a function that makes sure all the paramaters
 -- are equal to the types provided, for example
--- fn = typecheck(string.len, "string")
--- fn(10) --> "bad argument #1 to 'len' (string expected got number)"
+-- typechecked = typecheck(string.len, "len", "string")
+-- typechecked(10) --> "bad argument #1 to 'len' (string expected got number)"
 function typecheck(fn, name, ...)
   if type(fn) ~= "function" then
     error(
