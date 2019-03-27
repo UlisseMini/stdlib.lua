@@ -61,6 +61,11 @@ function table:map(fn)
 end
 table.map = typecheck(table.map, "map", "table", "function")
 
+function string.map(s, fn)
+  return string.gsub(s, '.', fn)
+end
+string.map = typecheck(string.map, "map", "string", "function")
+
 -- Return the exported functions.
 return {
   part = part,
