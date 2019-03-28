@@ -2,7 +2,7 @@
 -- are equal to the types provided, for example
 -- typechecked = typecheck(string.len, "len", "string")
 -- typechecked(10) --> "bad argument #1 to 'len' (string expected got number)"
-function typecheck(fn, name, ...)
+local function typecheck(fn, name, ...)
   if type(fn) ~= "function" then
     error(
       "bad argument #1 to 'typecheck' (want function got "..type(fn)..")", 2)
@@ -31,7 +31,7 @@ end
 
 -- part returns a function that executes fn with all the arguments passed
 -- to part plus any others.
-function part(fn, ...)
+local function part(fn, ...)
   if type(fn) ~= 'function' then
    error("bad argument #1 to 'part' (function expected, got "..type(fn)..")")
   end
