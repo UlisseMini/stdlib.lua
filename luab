@@ -1,11 +1,8 @@
 #!/usr/bin/env lua
 -- Script to add my custom standard library to the top lua files.
-
-function init()
-  if #arg < 1 then
-    print(("Usage: %s <file.lua>"):format(arg[0]))
-    return
-  end
+if #arg < 1 then
+  print(("Usage: %s <file.lua>"):format(arg[0]))
+  os.exit(1)
 end
 
 function main(lib)
@@ -21,8 +18,6 @@ function main(lib)
     :write(code)
     :close()
 end
-
-init()
 
 -- pass in the hardcoded stdlib.lua string
 main([[-- stdlib.lua, created by github.com/UlisseMini
