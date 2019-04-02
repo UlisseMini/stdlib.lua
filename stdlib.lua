@@ -1,8 +1,10 @@
+local std = {}
+
 -- return a function that makes sure all the paramaters
 -- are equal to the types provided, for example
 -- typechecked = typecheck(string.len, "len", "string")
 -- typechecked(10) --> "bad argument #1 to 'len' (string expected got number)"
-local function typecheck(fn, name, ...)
+function std.typecheck(fn, name, ...)
   if type(fn) ~= "function" then
     error(
       "bad argument #1 to 'typecheck' (want function got "..type(fn)..")", 2)
@@ -31,7 +33,7 @@ end
 
 -- part returns a function that executes fn with all the arguments passed
 -- to part plus any others.
-local function part(fn, ...)
+function std.part(fn, ...)
   if type(fn) ~= 'function' then
    error("bad argument #1 to 'part' (function expected, got "..type(fn)..")")
   end
@@ -59,15 +61,12 @@ function table:map(fn)
 
   return result
 end
-table.map = typecheck(table.map, "map", "table", "function")
+table.map = std.typecheck(table.map, "map", "table", "function")
 
 function string.map(s, fn)
   return string.gsub(s, '.', fn)
 end
-string.map = typecheck(string.map, "map", "string", "function")
+string.map = std.typecheck(string.map, "map", "string", "function")
 
 -- Return the exported functions.
-return {
-  part = part,
-  typecheck = typecheck,
-}
+return std
