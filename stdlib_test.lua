@@ -21,6 +21,14 @@ end
 
 -- TODO: Test partErrors being correct
 function test.partErrors()
+  local fn = std.part(function()
+    error 'foo'
+  end)
+
+  local _, err = pcall(fn)
+  if err:match 'stdlib.lua' then
+    error(('%q should not contain stdlib.lua'):format(err))
+  end
 end
 
 function test.tableMap()
